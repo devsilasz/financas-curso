@@ -10,10 +10,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name ="Lancamento")
+@Table(name ="lancamento", schema="financas")
 @Data
 @Builder
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class Lancamento {
 
     @Id

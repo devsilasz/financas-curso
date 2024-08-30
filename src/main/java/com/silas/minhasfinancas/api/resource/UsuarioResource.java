@@ -4,21 +4,16 @@ import com.silas.minhasfinancas.api.dto.UsuarioDTO;
 import com.silas.minhasfinancas.model.entity.Usuario;
 import com.silas.minhasfinancas.service.UsuarioService;
 import com.silas.minhasfinancas.service.exception.ErroAutenticacao;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@RequiredArgsConstructor
 public class UsuarioResource { // Usuario Resource é como se fosse um usuarioController
-
-
-
-    private UsuarioService service;
-
-    public UsuarioResource(UsuarioService service) {
-        this.service = service;
-    }
+    private final UsuarioService service;
 
     @PostMapping("/autenticar")
     public ResponseEntity autenticar( @RequestBody UsuarioDTO dto ) {
@@ -33,7 +28,7 @@ public class UsuarioResource { // Usuario Resource é como se fosse um usuarioCo
     @PostMapping
     public ResponseEntity salvar(@RequestBody UsuarioDTO dto) {
 
-        Usuario usuario = Usuario.builder().nome(dto.getNome()).email(dto.getSenha()).build();
+        Usuario usuario = Usuario.builder().nome(dto.getNome()).email(dto.getEmail()).senha(dto.getSenha()).build();
 
         try {
             Usuario usuarioSalvo = service.salvarUsuario(usuario);
