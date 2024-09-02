@@ -2,6 +2,7 @@ package com.silas.minhasfinancas.service.impl;
 
 import com.silas.minhasfinancas.model.entity.Lancamento;
 import com.silas.minhasfinancas.model.enums.StatusLancamento;
+import com.silas.minhasfinancas.model.enums.TipoLancamento;
 import com.silas.minhasfinancas.model.repository.LancamentoRepository;
 import com.silas.minhasfinancas.service.exception.RegraNegocioException;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,5 +99,21 @@ public class LancamentoServiceImpl implements LancamentoService {
     @Override
     public Optional<Lancamento> oberPorId(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BigDecimal obterSaldoPorUsuario(Long id) {
+        BigDecimal receitas = repository.obterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.RECEITA);
+        BigDecimal despesas = repository.obterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.DESPESA);
+        if (receitas == null) {
+            receitas = BigDecimal.ZERO;
+        }
+
+        if (despesas == null) {
+            despesas = BigDecimal.ZERO;
+        }
+
+        return receitas.subtract(despesas);
     }
 }

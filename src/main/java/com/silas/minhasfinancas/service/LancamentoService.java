@@ -4,6 +4,7 @@ import com.silas.minhasfinancas.model.entity.Lancamento;
 import com.silas.minhasfinancas.model.enums.StatusLancamento;
 import com.silas.minhasfinancas.service.exception.RegraNegocioException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +24,5 @@ public interface LancamentoService {
 
     Optional<Lancamento> oberPorId(Long Id);
 
+    BigDecimal obterSaldoPorUsuario(Long id);
 }

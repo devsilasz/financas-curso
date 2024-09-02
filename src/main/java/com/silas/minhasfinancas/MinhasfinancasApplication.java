@@ -10,6 +10,7 @@ public class MinhasfinancasApplication {
 		System.out.println("Live reload funcionando");
 	}
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(MinhasfinancasApplication.class, args);
 	}

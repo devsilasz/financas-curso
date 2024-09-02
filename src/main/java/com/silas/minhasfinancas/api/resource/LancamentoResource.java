@@ -1,5 +1,6 @@
 package com.silas.minhasfinancas.api.resource;
 
+import com.silas.minhasfinancas.api.dto.AtualizaStatusDTO;
 import com.silas.minhasfinancas.api.dto.LancamentoDTO;
 import com.silas.minhasfinancas.model.entity.Lancamento;
 import com.silas.minhasfinancas.model.entity.Usuario;
@@ -75,6 +76,26 @@ public class LancamentoResource {
             }
 
         }).orElseGet(() -> new ResponseEntity("Lancamento não encontrado na base de Dados.", HttpStatus.BAD_REQUEST));
+    }
+
+    @PutMapping("{id}/atualiza-status")
+    public ResponseEntity atualizarStatus(@PathVariable("id")  Long id, @RequestBody AtualizaStatusDTO dto) {
+        return service.oberPorId(id).map(entity -> {
+            StatusLancamento statusSelecionado = StatusLancamento.valueOf(dto.getStatus());
+            if(statusSelecionado == null) {
+                return ResponseEntity.badRequest().body("Não foi possivel atualizar o status do lançamento, envie um status válido");
+            }
+            try {
+                entity.setStatus(statusSelecionado);
+                service.atualizar(entity);
+                return ResponseEntity.ok(entity);
+            } catch(RegraNegocioException e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+
+        }).orElseGet( () ->
+                    new ResponseEntity("Lancamento não encontrado na base de Dados.", HttpStatus.BAD_REQUEST));
+
     }
 
     @DeleteMapping("{id}")
